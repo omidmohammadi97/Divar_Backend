@@ -1,13 +1,23 @@
-const { defult : mongoose} = require("mongoose");
+const { default : mongoose} = require("mongoose");
 const dotenv = require("dotenv");
-dotenv.config()
-const DBURL = process.env.MONGODBURL;
-dotenv.config({
-    path : path.join("../../",__dirname , `.env.${DBURL}` ) 
-})
+const path = require("path");
 
-mongoose.connect(process.env.DBURL).then(() =>{
-    console.log("Connection established!");
-}).catch(error =>{
-    console.log(error?.message ?? "Failed to connect to DB")
-})
+const dbConnection = async ()=>{
+    dotenv.config()
+    const NodeEnv = process.env.NodeEnv;
+
+    dotenv.config({
+        path : path.join(__dirname , `../../.env.${NodeEnv}` ) 
+        })
+        
+        console.log("TETST" , process.env.DBURL)
+    mongoose.connect(process.env.DBURL).then(() =>{
+        console.log("Connection established!");
+    }).catch(error =>{
+        console.log(error?.message ?? "Failed to connect to DB")
+    })
+    
+}
+module.exports = {
+    dbConnection  
+}
