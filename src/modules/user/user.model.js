@@ -1,4 +1,4 @@
-const { Schema } = require("mongoose");
+const { Schema  , model} = require("mongoose");
 
 const OTPSchema = new Schema({
    code : {type : String ,  required : false , default : undefined},
@@ -10,4 +10,6 @@ const userSchema = new Schema({
     verifedMobile : {type : Boolean , default : false , required : true},
     opt : {type :  OTPSchema }
 }, {timestamps :true})
-module.exports = userSchema;
+
+const userModel = model("user" , userSchema)
+module.exports = {userModel};
