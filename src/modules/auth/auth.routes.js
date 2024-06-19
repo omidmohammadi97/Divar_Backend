@@ -5,5 +5,5 @@ router.post("/sendOtp" , authController.sendOTP)
 router.post("/checkOtp" , authController.checkOTP)
 
 module.exports = {
-    authRoutes : router
+    AuthRouter : router
 }

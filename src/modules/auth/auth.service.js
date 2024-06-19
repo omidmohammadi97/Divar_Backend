@@ -1,5 +1,5 @@
 const autobind = require("auto-bind")
-const userModel = require("../user/user.model")
+const {userModel} = require("../user/user.model")
 const createError  = require('http-errors')
 const { authMessages } = require("./auth.messages")
 const {randomInt} = require("crypto")
@@ -9,13 +9,15 @@ class authService {
         autobind(this)
         this.#model = userModel
     }
-    async sendOTP( mobile){
+    async sendOTP(mobile){
         try {
+            console.log("mobile",mobile)
         //    const user = await this.checkExistUser(mobile);
            const user = await this.#model.findOne({mobile})
+           console.log("user",user)
            const now = new Date().getTime();
            const otp = {
-            otp : randomInt(10000 , 99999),
+            code : randomInt(10000 , 99999),
             expiresIn : now + (1000*60 *2)
            }
            if(!user){
@@ -25,15 +27,17 @@ class authService {
             })
             return newUser;
            }
+       
            if(user.otp && user.otp.expiresIn > now){
             throw new createError.badRequest(400 , authMessages.OTPIsNotExpired)
            }
+        //    console.log(otp)
            user.otp =otp;
            await user.save();
            return user;
            
         } catch (error) {
-            next(error);
+            return error;
         }
     }
     async checkOTP( mobile , code){
