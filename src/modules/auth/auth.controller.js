@@ -10,7 +10,6 @@ class authController {
 
     async sendOTP( req , res , next){
         try {
-            console.log("hahaha" , req.body)
             const { mobile} = req.body;
             await this.#service.sendOTP(mobile);
             return res.json({
@@ -22,7 +21,11 @@ class authController {
     }
     async checkOTP( req , res , next){
         try {
-            
+            const { mobile} = req.body;
+            await this.#service.checkOTP(mobile);
+            return res.json({
+                message : authMessages.loginSuccefully
+            })
         } catch (error) {
             next(error);
         }

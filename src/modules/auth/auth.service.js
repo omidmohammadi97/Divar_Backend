@@ -14,7 +14,7 @@ class authService {
             console.log("mobile",mobile)
         //    const user = await this.checkExistUser(mobile);
            const user = await this.#model.findOne({mobile})
-           console.log("user",user)
+        //    console.log("user",user)
            const now = new Date().getTime();
            const otp = {
             code : randomInt(10000 , 99999),
@@ -29,7 +29,7 @@ class authService {
            }
        
            if(user.otp && user.otp.expiresIn > now){
-            throw new createError.badRequest(400 , authMessages.OTPIsNotExpired)
+            throw new createError(400 , authMessages.OTPIsNotExpired)
            }
         //    console.log(otp)
            user.otp =otp;
@@ -37,14 +37,19 @@ class authService {
            return user;
            
         } catch (error) {
+            
             return error;
         }
     }
-    async checkOTP( mobile , code){
+    async checkOTP(mobile , code){
         try {
+            const user = await this.checkExistUser(mobile);
+            if(user?.otp?.expiresIn < Date().getTime) throw new createError(401 , authMessages.otpExpired);
+            if(user?.otp?.code !== code) throw new createError(401 ,authMessages.otpIsIncorrect)
+            return user
             
         } catch (error) {
-            next(error);
+            return error;
         }
     }
 

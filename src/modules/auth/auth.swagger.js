@@ -70,7 +70,7 @@
  *           schema:
  *             type: object
  *             properties:
- *               phoneNumber:
+ *               mobile:
  *                 type: string
  *                 example: '1234567890'
  *               otp:
