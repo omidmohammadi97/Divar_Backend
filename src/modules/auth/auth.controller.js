@@ -22,10 +22,16 @@ class authController {
     async checkOTP( req , res , next){
         try {
             const { mobile , code} = req.body;
-            await this.#service.checkOTP(mobile , code);
-            return res.json({
-                message : authMessages.loginSuccefully
+            const token = await this.#service.checkOTP(mobile , code);
+            return res.cookie("access_token" , token ,{httpOnly:true , secure : process.env.NodeEnv == "dev" ? false : true})
+            .status(200).json({
+                message : authMessages.loginSuccefully,
+                token
             })
+            // return res.json({
+            //     message : authMessages.loginSuccefully,
+            //     token
+            // })
         } catch (error) {
             next(error);
         }

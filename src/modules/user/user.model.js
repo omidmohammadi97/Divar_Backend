@@ -8,6 +8,7 @@ const OTPSchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
     fullName : {type : String , required : false , default : undefined},
     mobile : {type :String , required : true , unique : true },
+    accessToken : {type :String},
     verifedMobile : {type : Boolean , default : false , required : true},
     otp : {type :  OTPSchema }
 }, {timestamps :true})

@@ -5,6 +5,7 @@ const db = require("./src/config/mongoose.config")
 const swaggerConfig = require("./src/config/swagger.config")
 const notFoundHandler = require("./src/common/exception/notFound.handler")
 const AllExceptionHandler = require("./src/common/exception/all-exp.handler")
+const cookieParser = require("cookie-parser")
 async function main(){
     const app = express()
     const path = require("path");
@@ -12,6 +13,7 @@ async function main(){
     db.dbConnection();
     app.use(express.json())
     app.use(express.urlencoded({extended : true}))
+    app.use(cookieParser(process.env.COOKIE_SECRET_KEY))
     swaggerConfig(app)
     const NodeEnv = process.env.NodeEnv;
     dotenv.config({
