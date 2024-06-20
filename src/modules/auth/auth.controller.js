@@ -21,8 +21,8 @@ class authController {
     }
     async checkOTP( req , res , next){
         try {
-            const { mobile} = req.body;
-            await this.#service.checkOTP(mobile);
+            const { mobile , code} = req.body;
+            await this.#service.checkOTP(mobile , code);
             return res.json({
                 message : authMessages.loginSuccefully
             })

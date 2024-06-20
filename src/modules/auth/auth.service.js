@@ -10,7 +10,7 @@ class authService {
         this.#model = userModel
     }
     async sendOTP(mobile){
-        try {
+        
             console.log("mobile",mobile)
         //    const user = await this.checkExistUser(mobile);
            const user = await this.#model.findOne({mobile})
@@ -36,21 +36,22 @@ class authService {
            await user.save();
            return user;
            
-        } catch (error) {
-            
-            return error;
-        }
+       
     }
     async checkOTP(mobile , code){
-        try {
+       
             const user = await this.checkExistUser(mobile);
+
             if(user?.otp?.expiresIn < Date().getTime) throw new createError(401 , authMessages.otpExpired);
+
             if(user?.otp?.code !== code) throw new createError(401 ,authMessages.otpIsIncorrect)
-            return user
+
+            if(!user.verifedMobile){
+                user.verifedMobile = true;
+                await user.save()
+            }
             
-        } catch (error) {
-            return error;
-        }
+       
     }
 
     async checkExistUser(mobile){

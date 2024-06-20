@@ -73,7 +73,7 @@
  *               mobile:
  *                 type: string
  *                 example: '1234567890'
- *               otp:
+ *               code:
  *                 type: string
  *                 example: '123456'
  *     responses:
