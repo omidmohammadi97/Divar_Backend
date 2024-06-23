@@ -8,13 +8,7 @@
  * @swagger
  *  components:
  *      schemas:
- *        SendOTP :
- *             type: object
- *             required :
- *                  - mobilbe:
- *             properties:
- *                 mobile:
- *                       type: string
+ *        get info 
  */
 
 
