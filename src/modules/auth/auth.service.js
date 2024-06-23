@@ -32,7 +32,6 @@ class authService {
            if(user.otp && user.otp.expiresIn > now){
             throw new createError(400 , authMessages.OTPIsNotExpired)
            }
-        //    console.log(otp)
            user.otp =otp;
            await user.save();
            return user;
