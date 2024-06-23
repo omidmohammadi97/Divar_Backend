@@ -21,8 +21,8 @@ async function main(){
     });
     
     app.use(mainRouter)
-    notFoundHandler(app);
     AllExceptionHandler(app);
+    notFoundHandler(app);
     const PORT = process.env.PORT
         app.listen(PORT , ()=>{
         console.log("Server is listeing on port" + PORT)

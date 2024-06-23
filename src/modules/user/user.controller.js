@@ -7,7 +7,7 @@ class userController {
        autobind(this);
        this.#service = userService
     }
-    async f_getUser(req , res ,next){
+    async f_getInfo(req , res ,next){
         try {
             const user = req.user;
             return res.json(user)

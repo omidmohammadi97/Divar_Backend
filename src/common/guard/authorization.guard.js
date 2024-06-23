@@ -1,4 +1,3 @@
-const { HttpError } = require("http-errors");
 const AuthorizationMessages = require("../messages/auth.message");
 const jwt = require("jsonwebtoken");
 const { userModel } = require("../../modules/user/user.model");
@@ -11,7 +10,7 @@ const createError = require("http-errors");
        const data = jwt.verify(token , process.env.JWT_SECRET_KEY)
        if(data?.id){
         //lean() mehtod removes useless mehtods from your user model
-        const user = await userModel.findById(data.id , {accessToken : 0 , otp : 0}).lean()
+        const user = await userModel.findById(data.id , {accessToken : 0 , otp : 0 , __v : 0 , verifedMobile : 0  , updatedAt :0 }).lean()
         if(!user) throw new createError(404 , AuthorizationMessages.NotFoundAccount )
         req.user = user;
         return next()

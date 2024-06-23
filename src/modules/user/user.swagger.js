@@ -20,9 +20,9 @@
 
 /**
  * @swagger
- * /user/whoami:
+ * /user/getInfo:
  *   get:
- *     summary: Send OTP to the provided phone number
+ *     summary: get user information
  *     tags: [User]
  *     
  *     responses:

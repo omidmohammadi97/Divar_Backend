@@ -98,3 +98,32 @@
  *                   type: string
  *                   example: Invalid OTP
  */
+/**
+ * @swagger
+ * /auth/logOut:
+ *   get:
+ *     summary: logout user
+ *     tags: [Auth]
+ *    
+ *     responses:
+ *       200:
+ *         description: logout successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: logout successfully
+ *       400:
+ *         description: error happend
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: error happend
+ */

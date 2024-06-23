@@ -5,5 +5,6 @@ const authMessages = {
     loginSuccefully : "Login successfully",
     otpExpired : "OTP has expired please try again",
     otpIsIncorrect : "otp is not correct please try again",
+    logOutSuccefully : "you are successfully logged out"
 }
 module.exports = {authMessages}
