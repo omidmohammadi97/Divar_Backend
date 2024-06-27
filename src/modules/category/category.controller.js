@@ -25,9 +25,7 @@ class categoryController {
     async find(req , res ,next){
         try {
             const categories = await this.#service.find();
-            return res.status(HttpCodes.OK).json({
-                message : categoryMessages.getAllCategories
-            })
+            return res.status(HttpCodes.OK).json(categories)
         } catch (error) {
             next(error);
 

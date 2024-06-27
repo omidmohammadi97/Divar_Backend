@@ -1,6 +1,10 @@
 const autoBind = require("auto-bind");
 const {CategoryModel} = require("./category.model")
 const { categoryMessages } = require("./category.messages");
+const { isValidObjectId, set, Types } = require("mongoose");
+const createError  = require('http-errors');
+const { CONFLICT } = require("http-status-codes");
+const { default: slugify } = require("slugify");
 
 class categoryService {
     #model
@@ -9,20 +13,44 @@ class categoryService {
         this.#model = CategoryModel;
     }
 
-    async create(category){
-        const category = this.#model.findOne({name : category.name})
-        if(!category){
-            const newCategory = await this.#model.create(categoryDTO)
-            // {
-            //     name : category.name,
-            //     slug : category.slug,
-            //     icon : category.icon,
-            //     parent : category.parent,
-            //     parents : category.parents
-            // }
-        }else {
-            return categoryMessages.categoryExist;
+    async create(categoryDto){
+        if(categoryDto?.parent && isValidObjectId(categoryDto.parent)){
+            const existCategory = await this.checkExistById(categoryDto.parent);
+            categoryDto.parent = existCategory._id
+            categoryDto.parents = [
+                ... new Set(([existCategory._id.toSring()].concat(
+                    existCategory.parents.map(id => id.toSring())
+                )).map(id => new Types.ObjectId(id)))
+            ]
         }
+        if(categoryDto?.slug){
+            categoryDto.slug = slugify(categoryDto.slug)
+            await this.alreadyExistBySlug(categoryDto.slug)
+        }else{
+            categoryDto.slug = slugify(categoryDto.name)
+        }
+   
+    }
+    async checkExistById(id){
+        const category = this.#model.findById(id)
+        if(!category){
+            throw new createError(404 , categoryMessages.notFoundCategory)
+        }
+
+    }
+    async checkExistBySlug(slug){
+        const category = this.#model.findOne({slug})
+        if(!category){
+            throw new createError(404 , categoryMessages.notFoundCategory)
+        }
+        return category
+    }
+    async alreadyExistBySlug(slug){
+        const category = this.#model.findOne({slug})
+        if(category){
+            throw new createError(409 , categoryMessages.categoryExist)
+        }
+        return null
     }
     
 }
