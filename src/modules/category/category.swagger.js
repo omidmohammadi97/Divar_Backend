@@ -11,7 +11,7 @@
  *        CreateCategory:
  *          type: object
  *          required: 
- *            - name
+ *            - name 
  *            - icon 
  *          properties:
  *            name:

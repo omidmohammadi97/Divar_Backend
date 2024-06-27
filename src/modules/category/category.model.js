@@ -6,7 +6,7 @@ const CategorySchema = new Schema({
     icon : {type : String , required : true},
     parent : {type : Types.ObjectId , required : false , ref : "Category" },
     parents : {type : [Types.ObjectId] , required : false , ref : "Category" ,default : []}
-} , {virtuals : true , versionKey : false , id : false});
+} , {versionKey : false , id : false , toJSON : {virtuals : true }});
 CategorySchema.virtual("Children" , {
     ref : "Category",
     localField : "_id",
@@ -14,4 +14,4 @@ CategorySchema.virtual("Children" , {
 })
 
 const CategoryModel = model("category" , CategorySchema)
-module.exports = CategoryModel;
+module.exports = {CategoryModel};
