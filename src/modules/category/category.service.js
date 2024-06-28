@@ -24,7 +24,10 @@ class categoryService {
             ]
         }
         if(categoryDto?.slug){
+            console.log("categoryDto",categoryDto)
             categoryDto.slug = slugify(categoryDto.slug)
+            console.log("categoryDto.slug",categoryDto.slug)
+
             await this.alreadyExistBySlug(categoryDto.slug)
         }else{
             categoryDto.slug = slugify(categoryDto.name)
@@ -32,21 +35,22 @@ class categoryService {
    
     }
     async checkExistById(id){
-        const category = this.#model.findById(id)
+        const category =await this.#model.findById(id)
         if(!category){
             throw new createError(404 , categoryMessages.notFoundCategory)
         }
 
     }
     async checkExistBySlug(slug){
-        const category = this.#model.findOne({slug})
+        const category = await this.#model.findOne({slug})
         if(!category){
             throw new createError(404 , categoryMessages.notFoundCategory)
         }
         return category
     }
     async alreadyExistBySlug(slug){
-        const category = this.#model.findOne({slug})
+        const category = await  this.#model.findOne({slug})
+        // console.log("category" , category)
         if(category){
             throw new createError(409 , categoryMessages.categoryExist)
         }
