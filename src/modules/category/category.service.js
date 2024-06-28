@@ -16,22 +16,23 @@ class categoryService {
     async create(categoryDto){
         if(categoryDto?.parent && isValidObjectId(categoryDto.parent)){
             const existCategory = await this.checkExistById(categoryDto.parent);
+            console.log("existCategory",existCategory._id)
             categoryDto.parent = existCategory._id
             categoryDto.parents = [
-                ... new Set(([existCategory._id.toSring()].concat(
+                ... new Set(([existCategory._id.toString()].concat(
                     existCategory.parents.map(id => id.toSring())
                 )).map(id => new Types.ObjectId(id)))
             ]
         }
         if(categoryDto?.slug){
-            console.log("categoryDto",categoryDto)
             categoryDto.slug = slugify(categoryDto.slug)
-            console.log("categoryDto.slug",categoryDto.slug)
 
             await this.alreadyExistBySlug(categoryDto.slug)
         }else{
             categoryDto.slug = slugify(categoryDto.name)
         }
+        const category = await this.#model.create(categoryDto);
+        return category;
    
     }
     async checkExistById(id){
@@ -39,6 +40,7 @@ class categoryService {
         if(!category){
             throw new createError(404 , categoryMessages.notFoundCategory)
         }
+        return category
 
     }
     async checkExistBySlug(slug){
@@ -57,5 +59,8 @@ class categoryService {
         return null
     }
     
+    async finaAll(){
+        return await this.#model.find({parent : {$exists : false}}).populate({path : "Children"})
+    }
 }
 module.exports = new categoryService()

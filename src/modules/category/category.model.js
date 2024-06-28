@@ -8,10 +8,16 @@ const CategorySchema = new Schema({
     parents : {type : [Types.ObjectId] , required : false , ref : "Category" ,default : []}
 } , {versionKey : false , id : false , toJSON : {virtuals : true }});
 CategorySchema.virtual("Children" , {
-    ref : "Category",
+    ref : "category",
     localField : "_id",
     foreignField : "parent"
 })
+
+function authPopulate(next){
+    this.populate([{path : "Children"}])
+    next();
+}
+CategorySchema.pre("find" , authPopulate).pre("findOne" , authPopulate)
 
 const CategoryModel = model("category" , CategorySchema)
 module.exports = {CategoryModel};

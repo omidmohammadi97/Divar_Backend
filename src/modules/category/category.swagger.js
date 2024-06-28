@@ -40,7 +40,7 @@
  *           schema:
  *             $ref: '#/components/schemas/CreateCategory'
  *     responses:
- *       200:
+ *       201:
  *         description: Category has been created successfully
  *         content:
  *           application/json:
@@ -63,7 +63,7 @@
  */
 /**
  * @swagger
- * /category/getCategories:
+ * /category:
  *   get:
  *     summary: Get all Categories
  *     tags: [Category]
