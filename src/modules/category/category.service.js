@@ -22,7 +22,7 @@ class categoryService {
                 ... new Set(([existCategory._id.toString()].concat(
                     existCategory.parents.map(id => id.toSring())
                 )).map(id => new Types.ObjectId(id)))
-            ]
+            ] 
         }
         if(categoryDto?.slug){
             categoryDto.slug = slugify(categoryDto.slug)
