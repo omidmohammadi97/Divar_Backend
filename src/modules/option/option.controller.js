@@ -12,7 +12,11 @@ class optionController {
 
     async create(req , res ,next){
         try {
-          
+            const {title , key , category , guid , type , enum : list } = req.body;
+            await this.#service.create({title , key , category , guid , type ,  enum : list })
+            return res.status(HttpCodes.CREATED).json({
+                message : optionMessages.createoption
+            })
         } catch (error) {
             next(error);
 
