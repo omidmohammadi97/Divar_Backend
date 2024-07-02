@@ -76,17 +76,78 @@
  */
 /**
  * @swagger
- * /option/{categoryId}:
+ * /option/Bycategory/{categoryId}:
  *   get:
  *     summary: Get all Options for a category
  *     tags: [Option]
  *     parameters:
  *       - in: path
  *         name: categoryId
- *         required: true
  *         schema:
  *           type: string
  *         description: The ID of the category to retrieve options for
+ *     responses:
+ *       200:
+ *         description: All data has been returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: All data has been returned
+ *       400:
+ *         description: Some errors have been returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Some errors have been returned
+ */
+/**
+ * @swagger
+ * /option/{Id}:
+ *   get:
+ *     summary: Get one option by Id
+ *     tags: [Option]
+ *     parameters:
+ *       - in: path
+ *         name: Id
+ *         schema:
+ *           type: string
+ *         description: The ID of the option 
+ *     responses:
+ *       200:
+ *         description: All data has been returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: All data has been returned
+ *       400:
+ *         description: Some errors have been returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Some errors have been returned
+ */
+/**
+ * @swagger
+ * /option/:
+ *   get:
+ *     summary: Get All options
+ *     tags: [Option]
  *     responses:
  *       200:
  *         description: All data has been returned
