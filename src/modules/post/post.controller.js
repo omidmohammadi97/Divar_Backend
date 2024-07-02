@@ -1,4 +1,4 @@
-const postService = require("./user.service");
+const postService = require("./post.service");
 const autobind = require("auto-bind")
 const {postMessages} = require("./post.messages")
 class postController {
