@@ -24,6 +24,9 @@ class optionController {
     }
     async findById(req , res ,next){
         try {
+            const {Id} = req.params
+            const option = await this.#service.findById(Id)
+            return res.status(HttpCodes.OK).json(option)
     
         } catch (error) {
             next(error);
@@ -32,7 +35,9 @@ class optionController {
     }
     async findByCategoryId(req , res ,next){
         try {
-    
+            const {categoryId} = req.params
+            const optionByCategoryId = await this.#service.findByCategoryId(categoryId)
+            return res.status(HttpCodes.OK).json(optionByCategoryId)
         } catch (error) {
             next(error);
 
@@ -40,6 +45,8 @@ class optionController {
     }
     async find(req , res ,next){
         try {
+            const options = await this.#service.find()
+            return res.status(HttpCodes.OK).json(options)
     
         } catch (error) {
             next(error);

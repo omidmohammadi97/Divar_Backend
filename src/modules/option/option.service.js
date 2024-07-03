@@ -1,6 +1,6 @@
 const autoBind = require("auto-bind");
 const {optionModel} = require("./option.model")
-const {categoryModel} = require("./../category/category.model")
+const  {CategoryModel}  = require("./../category/category.model")
 const { optionMessages } = require("./option.messages");
 const HttpCodes = require("http-status-codes")
 const createError  = require('http-errors');
@@ -12,10 +12,11 @@ class optionService {
     constructor(){
         autoBind(this)
         this.#model = optionModel;
-        this.#categoryModel = categoryModel;
+        this.#categoryModel= CategoryModel;
     }
 
     async create(optionDto){
+        // console.log("optionDto",optionDto)
        const catgeory = await this.checkExistById(optionDto.category)
        optionDto.category = catgeory._id
        optionDto.key = slugify(optionDto.key , {trim : true , replacement : "_" , lower : true})
@@ -27,6 +28,17 @@ class optionService {
        const option = await this.#model.create(optionDto)
        
     }
+
+    async findById(id){
+       
+          const option = await this.#model.findById(id , { __v : 0});
+         if(!option) throw new createError(404 , optionMessages.notFoundoption)
+         return option
+    }
+
+    async findByCategoryId(id){
+        return await this.#model.find({category : id} , { __v : 0}).populate([{path :"category" , select : {name : 1 , slug : 1}}]);;
+    }
     async checkExistById(id){
         const category = await this.#categoryModel.findById(id);
         if(!category) throw new createError(404 , optionMessages.notFoundoption)
@@ -37,9 +49,10 @@ class optionService {
         if(isExist) throw new createError(HttpCodes.CONFLICT , optionMessages.optionExist)
         return null
     } 
-   
     
     async find(){
+        return await this.#model.find({} , { __v : 0} , {sort : {_id : -1}}).populate([{path :"category" , select : {name : -1 , slug : 1}}]);
+         
     }
 }
 module.exports = new optionService()
