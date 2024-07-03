@@ -4,6 +4,7 @@ const optionController = require("./option.controller");
 const router = Router();
 router.post("/createOption" , optionController.create)
 router.get("/Bycategory/:categoryId" , optionController.findByCategoryId)
+router.get("/Bycategory-slug/:slug" , optionController.findByCategorySlug)
 router.get("/:Id" , optionController.findById)
 router.get("/" , optionController.find)
 

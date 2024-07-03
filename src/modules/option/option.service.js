@@ -39,6 +39,41 @@ class optionService {
     async findByCategoryId(id){
         return await this.#model.find({category : id} , { __v : 0}).populate([{path :"category" , select : {name : 1 , slug : 1}}]);;
     }
+    async findByCategorySlug(slug){
+        const options = await this.#model.aggregate([
+            {
+                $lookup : {
+                    from : "categories" , //collection name in db
+                    localField : "category", //local field that is in option model
+                    foreignField : "_id", //field that is in category model and related in option model
+                    as : "category" // alias
+                }
+            },
+            {
+                $unwind : "$category" // change category output from array to object
+            },
+            {
+                $addFields : {
+                    categorySlug : "$category.slug",
+                    categoryName : "$category.name",
+                    categoryIcon : "$category.icon",
+                }
+            }
+            ,{
+                $project : {
+                    category :0 ,
+                    __v : 0
+                } 
+            },{
+                $match : {
+                    categorySlug : slug
+                }
+            }
+           
+        ])
+        return options
+        //276
+    }
     async checkExistById(id){
         const category = await this.#categoryModel.findById(id);
         if(!category) throw new createError(404 , optionMessages.notFoundoption)

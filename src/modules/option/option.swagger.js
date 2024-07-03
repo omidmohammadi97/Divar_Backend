@@ -144,6 +144,40 @@
  */
 /**
  * @swagger
+ * /option/Bycategory-slug/{slug}:
+ *   get:
+ *     summary: Get one option by slug
+ *     tags: [Option]
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         schema:
+ *           type: string
+ *         description: The slug of the option 
+ *     responses:
+ *       200:
+ *         description: All data has been returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: All data has been returned
+ *       400:
+ *         description: Some errors have been returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Some errors have been returned
+ */
+/**
+ * @swagger
  * /option/:
  *   get:
  *     summary: Get All options
