@@ -4,6 +4,7 @@ const optionMessages = {
     getAllCategories : "all categories has successfully get",
     notFoundoption : "not found option",
     removeOption : "option removed successfully",
+    optionUpdated : "option updated successfully",
     getAllOptions : "All options has successfully get"
 }
 module.exports = {optionMessages}

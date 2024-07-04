@@ -38,6 +38,7 @@
  *             items: 
  *                 type: string
  */
+
 /**
  * @swagger
  * /option/createOption:
@@ -65,6 +66,78 @@
  *                 message:
  *                   type: string
  *                   example: Option has been created successfully
+ *       400:
+ *         description: Some errors have been returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Some errors have been returned
+ */
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UpdateOption:
+ *       type: object 
+ *       properties:
+ *         title:
+ *             type: string
+ *         key:
+ *             type: string
+ *         category:
+ *             type: string
+ *         guid:
+ *             type: string
+ *         required:
+ *             type: boolean
+ *         type:
+ *             type: string
+ *             enum: 
+ *                 - number  
+ *                 - string  
+ *                 - boolean  
+ *                 - array  
+ *         enum:
+ *             type: array
+ *             items: 
+ *                 type: string
+ */
+/**
+ * @swagger
+ * /option/{Id}:
+ *   put:
+ *     summary: update  option 
+ *     tags: [Option]
+ *     parameters:
+ *       - in: path
+ *         name: Id
+ *         schema:
+ *           type: string
+ *         description: The ID of the option
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateOption'
+ *         application/x-www-form-urlencoded:
+ *            schema:
+ *             $ref: '#/components/schemas/UpdateOption'
+ *          
+ *     responses:
+ *       201:
+ *         description: Option has been updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Option has been updated successfully
  *       400:
  *         description: Some errors have been returned
  *         content:

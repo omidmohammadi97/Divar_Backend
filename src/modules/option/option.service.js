@@ -5,6 +5,8 @@ const { optionMessages } = require("./option.messages");
 const HttpCodes = require("http-status-codes")
 const createError  = require('http-errors');
 const { default: slugify } = require("slugify");
+const { isTrue, isFalse } = require("../../common/utils/functions");
+const { isValidObjectId } = require("mongoose");
 
 class optionService {
     #model
@@ -21,21 +23,43 @@ class optionService {
        optionDto.category = catgeory._id
        optionDto.key = slugify(optionDto.key , {trim : true , replacement : "_" , lower : true})
        await this.alreadyExistByCategoryAndKey(optionDto.category , optionDto.key)
+
        if(optionDto?.enum && typeof optionDto?.enum === "string"){
         optionDto.enum = optionDto.enum.split(",")
        }else if(!Array.isArray(optionDto.enum)) optionDto.enum = [];
-
+       if(isTrue(optionDto?.required)) optionDto.required = true; 
+       if(isFalse(optionDto?.required)) optionDto.required = false;
        const option = await this.#model.create(optionDto)
        
     }
-
+    async update(id , optionDto){
+       const existOption = await this.findById(id);
+       if(optionDto?.category && isValidObjectId(optionDto.category)){
+            const catgeory = await this.checkExistById(optionDto.category);
+            optionDto.category = catgeory._id
+       }else {
+          delete optionDto.category;
+       }
+       if(optionDto.key){
+        optionDto.key = slugify(optionDto.key , {trim : true , replacement : "_" , lower : true})
+        let categoryId = existOption.category
+        await this.alreadyExistByCategoryAndKey(categoryId , optionDto.key)  
+        }
+        if(optionDto?.enum && typeof optionDto?.enum === "string"){
+            optionDto.enum = optionDto.enum.split(",")
+           }else if(!Array.isArray(optionDto.enum)) delete optionDto.enum;
+           if(isTrue(optionDto?.required)) optionDto.required = true; 
+           else if(isFalse(optionDto?.required)) optionDto.required = false;
+           else delete optionDto.required;
+           return await this.#model.updateOne({_id : id} , {$set : optionDto})
+    }
     async findById(id){
+        console.log("id" , id)
          const option = await this.#model.findById(id , { __v : 0});
          if(!option) throw new createError(404 , optionMessages.notFoundoption)
          return option
     }
     async deleteById(id){
-       
         const option = await this.#model.findById(id);
         if(!option) throw new createError(404 , optionMessages.notFoundoption)
         return await this.#model.deleteOne({_id : id})
