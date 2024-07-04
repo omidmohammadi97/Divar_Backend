@@ -204,3 +204,37 @@
  *                   type: string
  *                   example: Some errors have been returned
  */
+/**
+ * @swagger
+ * /option/{Id}:
+ *   delete:
+ *     summary: delete one option by Id
+ *     tags: [Option]
+ *     parameters:
+ *       - in: path
+ *         name: Id
+ *         schema:
+ *           type: string
+ *         description: The ID of the option 
+ *     responses:
+ *       200:
+ *         description: option removed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: option removed
+ *       400:
+ *         description: Some errors have been returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Some errors have been returned
+ */

@@ -3,6 +3,7 @@ const optionMessages = {
     optionExist : "This option already exists",
     getAllCategories : "all categories has successfully get",
     notFoundoption : "not found option",
+    removeOption : "option removed successfully",
     getAllOptions : "All options has successfully get"
 }
 module.exports = {optionMessages}

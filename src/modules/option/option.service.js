@@ -30,11 +30,16 @@ class optionService {
     }
 
     async findById(id){
-       
-          const option = await this.#model.findById(id , { __v : 0});
+         const option = await this.#model.findById(id , { __v : 0});
          if(!option) throw new createError(404 , optionMessages.notFoundoption)
          return option
     }
+    async deleteById(id){
+       
+        const option = await this.#model.findById(id);
+        if(!option) throw new createError(404 , optionMessages.notFoundoption)
+        return await this.#model.deleteOne({_id : id})
+  }
 
     async findByCategoryId(id){
         return await this.#model.find({category : id} , { __v : 0}).populate([{path :"category" , select : {name : 1 , slug : 1}}]);;
@@ -72,7 +77,6 @@ class optionService {
            
         ])
         return options
-        //276
     }
     async checkExistById(id){
         const category = await this.#categoryModel.findById(id);

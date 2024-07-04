@@ -33,6 +33,19 @@ class optionController {
 
         }
     }
+    async deleteById(req , res ,next){
+        try {
+            const {Id} = req.params
+            await this.#service.deleteById(Id)
+            return res.status(HttpCodes.OK).json({
+                message : optionMessages.removeOption
+            })
+    
+        } catch (error) {
+            next(error);
+
+        }
+    }
     async findByCategoryId(req , res ,next){
         try {
             const {categoryId} = req.params
