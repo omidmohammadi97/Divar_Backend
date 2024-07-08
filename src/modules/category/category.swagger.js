@@ -89,3 +89,34 @@
  *                   type: string
  *                   example: Some errors have been returned
  */
+/**
+ * @swagger
+ * /category/{id}:
+ *   delete:
+ *     summary: Delete One Category
+ *     tags: [Category]
+ *     parameters:
+ *       - in: path
+ *         name: id 
+ *     responses:
+ *       200:
+ *         description: delete category was successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: category has been deleted
+ *       400:
+ *         description: Some errors have been returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Some errors have been returned
+ */
