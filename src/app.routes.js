@@ -11,5 +11,8 @@ mainRouter.use("/user" , userRouter);
 mainRouter.use("/category" , categoryRouter);
 mainRouter.use("/post" , postRouter);
 mainRouter.use("/option" , optionRoutes);
+mainRouter.get("/" , (req,res)=>{
+    res.render("./pages/index.ejs")
+});
 
 module.exports =  mainRouter;

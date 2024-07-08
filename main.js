@@ -1,5 +1,6 @@
 const express = require("express")
 const dotenv = require("dotenv")
+const expressEjsLayouts = require("express-ejs-layouts")
 const mainRouter = require("./src/app.routes")
 const db = require("./src/config/mongoose.config")
 const swaggerConfig = require("./src/config/swagger.config")
@@ -19,7 +20,10 @@ async function main(){
     dotenv.config({
         path : path.join(__dirname , `.env.${NodeEnv}` ) 
     });
-    
+    app.use(express.static("public"))
+    app.use(expressEjsLayouts)
+    app.set("view engine" , "ejs")
+    app.set("layout" , "./layouts/pannel/main.ejs")
     app.use(mainRouter)
     notFoundHandler(app);
     AllExceptionHandler(app);
