@@ -12,7 +12,15 @@ mainRouter.use("/category" , categoryRouter);
 mainRouter.use("/post" , postRouter);
 mainRouter.use("/option" , optionRoutes);
 mainRouter.get("/" , (req,res)=>{
-    res.render("./pages/index.ejs")
+    res.locals.layout = "./layouts/website/main.ejs"
+    res.render("./pages/home/index.ejs")
+});
+mainRouter.get("/pannel" , (req,res)=>{
+    res.render("./pages/pannel/dashboard.ejs")
+});
+mainRouter.get("/auth/login" , (req,res)=>{
+    res.locals.layout = "./layouts/auth/main.ejs"
+    res.render("./pages/auth/login.ejs")
 });
 
 module.exports =  mainRouter;
