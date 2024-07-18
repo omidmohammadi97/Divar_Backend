@@ -22,5 +22,9 @@ mainRouter.get("/auth/login" , (req,res)=>{
     res.locals.layout = "./layouts/auth/main.ejs"
     res.render("./pages/auth/login.ejs")
 });
+// mainRouter.get("/post/create" , (req,res)=>{
+//     res.locals.layout = "./layouts/auth/main.ejs"
+//     res.render("./pages/pannel/create-post.ejs")
+// });
 
 module.exports =  mainRouter;

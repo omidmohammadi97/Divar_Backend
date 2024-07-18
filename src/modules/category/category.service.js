@@ -23,7 +23,7 @@ class categoryService {
             categoryDto.parent = existCategory._id
             categoryDto.parents = [
                 ... new Set(([existCategory._id.toString()].concat(
-                    existCategory.parents.map(id => id.toSring())
+                    existCategory.parents.map(id => id.toString())
                 )).map(id => new Types.ObjectId(id)))
             ] 
         }
