@@ -3,6 +3,9 @@ const autobind = require("auto-bind")
 const {postMessages} = require("./post.messages");
 const { CategoryModel } = require("../category/category.model");
 const createError = require("http-errors");
+const { Types } = require("mongoose");
+const HttpCodes = require("http-status-codes")
+
 class postController {
     #service
     constructor(){
@@ -13,15 +16,13 @@ class postController {
     
     async createPostPage(req , res ,next){
         try {
-            console.log(" req.params", req.query)
             let {slug} = req.query;
             let showBack = false;
             let match = {parent : null}
-            let options;
-            console.log("slug",slug)
+            let options , category
             if(slug){
                 slug = slug.trim();
-                const category = await CategoryModel.findOne({slug});
+                category = await CategoryModel.findOne({slug});
                 if(!category) throw new createError(404 , postMessages.notFoundPost);
                 options = await this.#service.getCategorytOptions(category._id)
                 if(options.length == 0) options = null;
@@ -35,6 +36,7 @@ class postController {
             }])
            res.render("./pages/pannel/create-post" , {
             categories,
+            category : category?._id,
             options,
             showBack 
            })
@@ -45,8 +47,18 @@ class postController {
 
     async create(req , res ,next){
         try {
-            const {title , content , category , province , city , district , coordinate , images} = req.body
-            await this.#service.create({title , content , category , province , city , district , coordinate , images});
+            console.log("hhhhh")
+            console.log(req.body)
+            const { title_post:  title  ,description :  content , category , lat , lng} = req.body
+            delete req.body['title_post']
+            delete req.body['description']
+            delete req.body['category']
+            delete req.body['lat']
+            delete req.body['lng']
+            const options = req.body;
+            console.log(options)
+
+            await this.#service.create({title , content  , category : new Types.ObjectId(category) , coordinate : [lat , lng] , images : [] , options});
             return res.status(HttpCodes.CREATED).json({
                 message : postMessages.createPost
             })

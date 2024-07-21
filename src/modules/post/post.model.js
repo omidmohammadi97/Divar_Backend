@@ -4,12 +4,13 @@ const {default : mongoose, Types} = require("mongoose");
 
 const PostSchema = new mongoose.Schema({
     title : {type : String , required : true},
-    content : {type :String , required : true },
-    category : {type : Types.ObjectId , ref : "category" ,  required : true},
-    province : {type :  String , required : true },
-    city : {type :  String , required : true },
-    district : {type :  String , required : true },
-    coordinate : {type :  [Number] , required : true },
+    content : {type :String , required : true},
+    category : {type : Types.ObjectId , ref : "category" ,  required : false},
+    province : {type :  String , required : false },
+    city : {type :  String , required : false},
+    district : {type :  String , required : false },
+    coordinate : {type :  [Number] , required : false },
+    optons : {type : Object , default : {}},
     images : {type :  [String] , required : true , default : [] }
 }, {timestamps :true})
 
