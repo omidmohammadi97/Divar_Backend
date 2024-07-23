@@ -4,7 +4,9 @@ const {postMessages} = require("./post.messages");
 const { CategoryModel } = require("../category/category.model");
 const createError = require("http-errors");
 const { Types } = require("mongoose");
-const HttpCodes = require("http-status-codes")
+const HttpCodes = require("http-status-codes");
+const { removeObjectProperties } = require("../../common/utils/functions");
+const { getAddressDetails } = require("../../common/utils/http");
 
 class postController {
     #service
@@ -47,18 +49,24 @@ class postController {
 
     async create(req , res ,next){
         try {
-            console.log("hhhhh")
-            console.log(req.body)
-            const { title_post:  title  ,description :  content , category , lat , lng} = req.body
-            delete req.body['title_post']
-            delete req.body['description']
-            delete req.body['category']
-            delete req.body['lat']
-            delete req.body['lng']
-            const options = req.body;
+            const { title_post:  title  ,description :  content , category , lat , lng , amount} = req.body;
+            const {address , province , district , city} = await getAddressDetails(lat , lng)
+            // const result = await axios.get(`${process.env.MAP_IR_URL}?lat=${lat}&lon=${lng}` , 
+            //     {headers : {
+            //         "x-api-key" : process.env.MAP_IR_APIKEY
+            //     }
+            // }).then(res => res.data);
+            const options = await removeObjectProperties(req.body , ['title_post' , 'description' , 'category', 'lat' , 'lng' , 'amount' ,'images']);
             console.log(options)
 
-            await this.#service.create({title , content  , category : new Types.ObjectId(category) , coordinate : [lat , lng] , images : [] , options});
+            await this.#service.create({title , content  ,amount ,category : new Types.ObjectId(category) , coordinate : [lat , lng] , images : [] , 
+                address ,
+                province ,
+                district ,
+                city ,
+                options
+
+            });
             return res.status(HttpCodes.CREATED).json({
                 message : postMessages.createPost
             })

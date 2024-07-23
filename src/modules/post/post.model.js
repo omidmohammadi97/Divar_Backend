@@ -8,9 +8,10 @@ const PostSchema = new mongoose.Schema({
     category : {type : Types.ObjectId , ref : "category" ,  required : false},
     province : {type :  String , required : false },
     city : {type :  String , required : false},
+    address : {type :  String , required : false},
     district : {type :  String , required : false },
     coordinate : {type :  [Number] , required : false },
-    optons : {type : Object , default : {}},
+    options : {type : Object , default : {}},
     images : {type :  [String] , required : true , default : [] }
 }, {timestamps :true})
 
