@@ -12,7 +12,7 @@ async function main(){
     const path = require("path");
     dotenv.config();
     db.dbConnection();
-    app.use(express.json())
+    app.use(express.json({ type: 'application/json', charset: 'utf-8' }));
     app.use(express.urlencoded({extended : true}))
     app.use(cookieParser(process.env.COOKIE_SECRET_KEY))
     swaggerConfig(app)

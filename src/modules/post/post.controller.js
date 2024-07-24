@@ -7,6 +7,7 @@ const { Types } = require("mongoose");
 const HttpCodes = require("http-status-codes");
 const { removeObjectProperties } = require("../../common/utils/functions");
 const { getAddressDetails } = require("../../common/utils/http");
+const utf8 = require("utf8")
 
 class postController {
     #service
@@ -49,17 +50,21 @@ class postController {
 
     async create(req , res ,next){
         try {
+            console.log(req.files);            
+            const images = req?.files?.map(image => image?.path?.slice(7));
             const { title_post:  title  ,description :  content , category , lat , lng , amount} = req.body;
             const {address , province , district , city} = await getAddressDetails(lat , lng)
-            // const result = await axios.get(`${process.env.MAP_IR_URL}?lat=${lat}&lon=${lng}` , 
-            //     {headers : {
-            //         "x-api-key" : process.env.MAP_IR_APIKEY
-            //     }
-            // }).then(res => res.data);
             const options = await removeObjectProperties(req.body , ['title_post' , 'description' , 'category', 'lat' , 'lng' , 'amount' ,'images']);
+            for (let key in options) {
+                let value = options[key];
+                delete options[key];
+                key = utf8.decode(key);
+                options[key] = value;
+
+            }
             console.log(options)
 
-            await this.#service.create({title , content  ,amount ,category : new Types.ObjectId(category) , coordinate : [lat , lng] , images : [] , 
+            await this.#service.create({title , content  ,amount ,category : new Types.ObjectId(category) , coordinate : [lat , lng] , images  , 
                 address ,
                 province ,
                 district ,

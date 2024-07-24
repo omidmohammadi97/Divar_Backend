@@ -12,7 +12,7 @@ const PostSchema = new mongoose.Schema({
     district : {type :  String , required : false },
     coordinate : {type :  [Number] , required : false },
     options : {type : Object , default : {}},
-    images : {type :  [String] , required : true , default : [] }
+    images : {type :  [String] , required : false , default : [] }
 }, {timestamps :true})
 
 const postModel = mongoose.model("post" , PostSchema)
