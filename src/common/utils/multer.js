@@ -10,11 +10,11 @@ const storage = multer.diskStorage({
         cb(null, uploadPath);
     },
     filename: function (req, file, cb) {
-        console.log("Filename function called", file);
         const whiteList = ["image/png", "image/jpg", "image/jpeg", "image/webp"];
         if (whiteList.includes(file.mimetype)) {
             const format = path.extname(file.originalname);
             const fileName = new Date().getTime().toString() + format;
+            console.log("FILE NAME" , fileName)
             cb(null, fileName);
         } else {
             cb(HttpStatusCode.BadRequest("Format of pictures are not allowed!"));

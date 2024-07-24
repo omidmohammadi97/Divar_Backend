@@ -50,8 +50,8 @@ class postController {
 
     async create(req , res ,next){
         try {
-            console.log(req.files);            
-            const images = req?.files?.map(image => image?.path?.slice(7));
+            const images = req?.files?.map(image => image?.path?.slice(38));
+            console.log("images" , images)
             const { title_post:  title  ,description :  content , category , lat , lng , amount} = req.body;
             const {address , province , district , city} = await getAddressDetails(lat , lng)
             const options = await removeObjectProperties(req.body , ['title_post' , 'description' , 'category', 'lat' , 'lng' , 'amount' ,'images']);
@@ -77,6 +77,16 @@ class postController {
             })
         } catch (error) {
             next(error)
+        }
+    }
+    async find(req , res ,next){
+        try {
+            const posts = await this.#service.find();
+            console.log(posts)
+            return res.render("./pages/pannel/post" , posts)
+            
+        } catch (error) {
+            next(error)  
         }
     }
 
