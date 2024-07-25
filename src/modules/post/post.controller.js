@@ -82,8 +82,7 @@ class postController {
     async find(req , res ,next){
         try {
             const posts = await this.#service.find();
-            console.log(posts)
-            return res.render("./pages/pannel/post" , posts)
+            return res.render("./pages/pannel/posts" , {posts})
             
         } catch (error) {
             next(error)  
