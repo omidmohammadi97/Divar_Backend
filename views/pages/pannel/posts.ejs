@@ -3,10 +3,10 @@
     <div class="card w-100">
       <div class="card-body p-4">
         <%if(success_message){%>
-        <div class="row">
-          <p class="alert alert-info"><%=success_message%></p>
-        </div>
-        <%}%>
+          <div class="row">
+            <p class="alert alert-info"><%=success_message%></p>
+          </div>
+          <%}%>
         <div class="row">
           <h5 class="card-title fw-semibold mb-4 col-lg-6">آگهی های من</h5>
           <span class="col-lg-6 text-left">
@@ -38,7 +38,7 @@
             </thead>
             <tbody>
               <%if(count === 0){%>
-              <tr>
+              <tr> 
                 <td colspan="5">
                   <p class="alert alert-warning text-center">
                     شما هیچ آگهی را ثبت نکرده اید
@@ -51,12 +51,12 @@
                 <td><%=post.title%></td>
                 <td><%=post.content%></td>
                 <td>
-                  <%=moment(post.createdAt).locale("fa").format("jDD jMMMM jYYYY")%>
+                  <%=moment(post.createdAt).locale("fa").format(`jDD jMMMM jYYYY`)%>
                 </td>
                 <td>
                   <form
-                    action="/post/delete/<%=post._id%>?_method=delete"
-                    method="post"
+                    action="/post/delete/<%=post._id%>"
+                    method="get"
                     class="d-inline">
                     <button type="submit" class="btn btn-danger">حذف</button>
                   </form>

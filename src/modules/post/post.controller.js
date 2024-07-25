@@ -11,6 +11,7 @@ const utf8 = require("utf8")
 
 class postController {
     #service
+    success_message;
     constructor(){
        autobind(this);
        this.#service = postService
@@ -50,6 +51,7 @@ class postController {
 
     async create(req , res ,next){
         try {
+            const userId = req.user._id
             const images = req?.files?.map(image => image?.path?.slice(38));
             console.log("images" , images)
             const { title_post:  title  ,description :  content , category , lat , lng , amount} = req.body;
@@ -61,10 +63,10 @@ class postController {
                 key = utf8.decode(key);
                 options[key] = value;
 
-            }
+            } 
             console.log(options)
 
-            await this.#service.create({title , content  ,amount ,category : new Types.ObjectId(category) , coordinate : [lat , lng] , images  , 
+            await this.#service.create({userId , title , content  ,amount ,category : new Types.ObjectId(category) , coordinate : [lat , lng] , images  , 
                 address ,
                 province ,
                 district ,
@@ -72,17 +74,44 @@ class postController {
                 options
 
             });
-            return res.status(HttpCodes.CREATED).json({
-                message : postMessages.createPost
-            })
+            // return res.status(HttpCodes.CREATED).json({
+            //     message : postMessages.createPost
+            // })
+            this.success_message = postMessages.createPost
+            const posts = await this.#service.find(userId)
+            res.render("./pages/pannel/posts.ejs" , {
+                posts ,
+                count : posts.length,
+                success_message : this.success_message,
+                error_message : postMessages.notFoundPost
+               })
         } catch (error) {
             next(error)
         }
     }
-    async find(req , res ,next){
+    async findMyPosts(req , res ,next){
         try {
-            const posts = await this.#service.find();
-            return res.render("./pages/pannel/posts" , {posts})
+            const userId = req.user._id
+            const posts = await this.#service.findMyPosts(userId);
+            return res.render("./pages/pannel/posts" , {posts ,  count : posts.length ,
+                success_message :null,
+                error_message :null})
+            
+        } catch (error) {
+            next(error)  
+        }
+    }
+    async removePost(req , res ,next){
+        try {
+            const {id} = req.params
+            console.log(id)
+            const posts = await this.#service.remove(id);
+            this.success_message = postMessages.deletePost;
+            return res.redirect('/post/my')
+            // return res.render("./pages/pannel/posts" , {posts , 
+            //      count : posts.length , 
+            //     success_message :  this.success_message,
+            //     error_message : null})
             
         } catch (error) {
             next(error)  

@@ -6,6 +6,7 @@ const PostSchema = new mongoose.Schema({
     title : {type : String , required : true},
     content : {type :String , required : true},
     category : {type : Types.ObjectId , ref : "category" ,  required : false},
+    userId : {type : Types.ObjectId ,  required : true},
     province : {type :  String , required : false },
     city : {type :  String , required : false},
     address : {type :  String , required : false},
