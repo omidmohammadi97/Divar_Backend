@@ -74,18 +74,9 @@ class postController {
                 options
 
             });
-            // return res.status(HttpCodes.CREATED).json({
-            //     message : postMessages.createPost
-            // })
-            this.success_message = postMessages.createPost
-            const posts = await this.#service.find(userId)
-            res.render("./pages/pannel/posts.ejs" , {
-                posts ,
-                count : posts.length,
-                success_message : this.success_message,
-                error_message : postMessages.notFoundPost
-               })
-        } catch (error) {
+            this.success_message = postMessages.createPost;
+            return res.redirect('/post/my');
+            } catch (error) {
             next(error)
         }
     }
@@ -104,17 +95,38 @@ class postController {
     async removePost(req , res ,next){
         try {
             const {id} = req.params
-            console.log(id)
-            const posts = await this.#service.remove(id);
+            await this.#service.remove(id);
             this.success_message = postMessages.deletePost;
-            return res.redirect('/post/my')
-            // return res.render("./pages/pannel/posts" , {posts , 
-            //      count : posts.length , 
-            //     success_message :  this.success_message,
-            //     error_message : null})
-            
+            return res.redirect('/post/my');
         } catch (error) {
             next(error)  
+        }
+    }
+    async postList (req, res, next) {
+        try {
+            const query = req.query;
+            const posts = await this.#service.findAll(query);
+            res.locals.layout = "./layouts/website/main.ejs";
+            res.render("./pages/home/index.ejs", {
+                posts
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+    async showPost (req, res, next) {
+        try {
+            console.log("INJA")
+            const {id} = req.params;
+            const post = await this.#service.checkExist(id);
+            res.locals.layout = "./layouts/website/main.ejs";
+            res.render("./pages/home/post.ejs", {
+                post
+            });
+
+        } catch (error) {
+            next(error);
         }
     }
 

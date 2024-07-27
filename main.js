@@ -8,6 +8,7 @@ const notFoundHandler = require("./src/common/exception/notFound.handler")
 const AllExceptionHandler = require("./src/common/exception/all-exp.handler")
 const cookieParser = require("cookie-parser")
 const moment = require("jalali-moment")
+const methodOverride = require("method-override")
 async function main(){
     const app = express()
     const path = require("path");
@@ -23,7 +24,10 @@ async function main(){
     });
     app.use(express.static("public"))
     app.use(expressEjsLayouts)
+    app.use(methodOverride('_method'));
     app.set("view engine" , "ejs")
+    app.set("layout extractScripts" , true)
+    app.set("layout extractStyles" , true)
     app.set("layout" , "./layouts/pannel/main.ejs")
     app.use(mainRouter)
     app.locals.moment = moment

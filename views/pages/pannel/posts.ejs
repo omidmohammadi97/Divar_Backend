@@ -19,7 +19,7 @@
           <table class="table text-nowrap mb-0 align-middle">
             <thead class="text-dark fs-4">
               <tr>
-                <th class="border-bottom-0">
+                <th class="border-bottom-0"> 
                   <h6 class="fw-semibold mb-0">شناسه</h6>
                 </th>
                 <th class="border-bottom-0">
@@ -55,8 +55,8 @@
                 </td>
                 <td>
                   <form
-                    action="/post/delete/<%=post._id%>"
-                    method="get"
+                    action="/post/delete/<%=post._id%>?_method=delete"
+                    method="post"
                     class="d-inline">
                     <button type="submit" class="btn btn-danger">حذف</button>
                   </form>

@@ -16,7 +16,7 @@
             <img src="/home/img/share.svg" class="post-share" alt="" />
           </div>
           <div class="post-list">
-            <a href="" class="post-landing">
+            <a href="" class="post-landing"> 
               <div class="post-row">
                 <div class="post-landing-mobile">
                   <img src="/home/img/mobile.svg" alt="" />
@@ -109,7 +109,7 @@
 <script>
     const callDetailBtn = document.querySelector("#call-detail");
     callDetailBtn.addEventListener("click", (e) => {
-        console.log("hi ")
+        console.log("hi" , e)
         Swal.fire({
             title: "<%=post.userMobile%>",
             confirmButtonText: "تماس",
