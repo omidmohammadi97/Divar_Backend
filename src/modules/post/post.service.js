@@ -41,10 +41,12 @@ class postSerivce {
 
      }
      async findAll (options) {
+
       let {category, search} = options;
       const query = {};
       if (category) {
           const result = await this.#categoryModel.findOne({slug: category});
+          console.log(result)
           let categories = await this.#categoryModel.find({parents: result._id}, {_id: 1});
           categories = categories.map(item => item._id);
           if (result) {
@@ -57,14 +59,14 @@ class postSerivce {
       }
       if (search) {
           search = new RegExp(search, "ig");
-          query['$or'] = [
+          query['$or'] = [ 
               {title: search},
               {description: search},
           ];
       }
       console.log(query)
+      console.log(options)
       const posts = await this.#model.find(query,{ __v : 0}, {sort: {_id: -1}});
-      console.log(posts)
       return posts;
      }
 
