@@ -62,7 +62,9 @@ class postSerivce {
               {description: search},
           ];
       }
-      const posts = await this.#model.find(query, {}, {sort: {_id: -1}});
+      console.log(query)
+      const posts = await this.#model.find(query,{ __v : 0}, {sort: {_id: -1}});
+      console.log(posts)
       return posts;
      }
 
